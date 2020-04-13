@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>ChatME | REGISTER</title>
+</head>
+<body>
+    <div class="register">
+        <main class="main-content">
+          <!-- <span class="close" >+</span> -->
+          <h2>Register With Us</h2>
+          <form action="register" method="POST" autocomplete="off">
+              <div class="form-group">
+                <span class="diffe"><i class="fa fa-user"></i></span>       
+                <input type="text" placeholder="First name*" name="fname" >
+              </div>
+              <p class="error" id="nameError"></p>
+
+              <div class="form-group">
+                <span class="diffe"><i class="fa fa-user"></i></span>       
+                <input type="text" placeholder="Last name*" name="lname" >
+              </div>
+              <p class="error" id="nameError"></p>
+    
+    
+              <div class="form-group">
+                <span class="diffe"><i class="fa fa-envelope"></i></span>       
+                <input type="email" placeholder="Email address*" name="email" >
+              </div>
+              <p class="error" id="regEmailError"></p>
+    
+              <div class="form-group">
+                <span class="diffe"><i class="fa fa-unlock"></i></span>       
+                <input type="password" placeholder="Password*" name="password" >
+              </div>
+              <p class="error" id="regPassError"></p>
+    
+              <div class="form-group">
+                <span class="diffe"><i class="fa fa-unlock"></i></span>       
+                <input type="password" placeholder="Confirm password*" name="passConfirm" >
+              </div>
+              <p class="error" id="passConfirmError"></p>
+    
+              <div class="button-holder">
+                <button class="button"  id="submit">Register</button>
+              </div>
+    
+          </form>
+          <p>Already have an account <a href="/login" class="show-login-modal" target="_self" rel="noopener noreferrer">Log in Here</a></p>
+      </main>
+    
+      </div> <!-- END OF REGISTRATION MODAL -->
+
+      <script src="js/landing_main.js"></script>
+</body>
+</html>

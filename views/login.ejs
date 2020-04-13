@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>ChatMe | LOGIN</title>
+</head>
+<body>
+    <div class="login">
+        <main class="main-content">
+          <h2>User | Login</h2>
+          <form action="/login" method="POST"  autocomplete="off">
+              <div class="form-group" id="email-group">
+                <span class="diffe"><i class="fa fa-envelope"></i></span>       
+                <input type="email" placeholder="Email address" name="email" autocomplete="off">
+              </div>
+              <p class="error" id="emailError"></p>
+    
+    
+              <div class="form-group" id="pass-group">
+                 <span class="diffe"><i class="fa fa-unlock"></i></span>       
+                <input type="password" placeholder="Password" name="password">
+              </div>
+              <p class="error" id="passError"></p>
+
+              <div class="button-holder" style="margin: 0px;">
+                <button class="button" value = "Log In" name="login">Log In</button>
+              </div>
+          </form> 
+          <p>Forgot your password <a href="passReset.html" target="_self" rel="noopener noreferrer">Reset</a> | <a href="/register" class="reg-cta" target="_self" rel="noopener noreferrer">Sign up</a></p>
+        </main>
+      </div> <!-- END OF LOGIN MODAL -->
+
+      <script>
+        const check = (current_user) => {              
+          let = url = `https://exdotco.herokuapp.com/user/validate_token/${current_user}`
+          fetch(url)
+          .then(resp => {
+              if(resp.ok) {
+                  return resp.json()
+              } else {
+                  return Promise.reject("Oops... Token Expired, Please start the process again.")
+              }
+          })
+          .then(data => {
+              if (data !== "sessionExpired") {
+                self.location = "home.html"
+              }
+          })
+          .catch(error => {
+              console.log(error)
+          })
+      }
+      
+      let userDetails = JSON.parse(localStorage.getItem('userInfo'))
+      console.log(userDetails)
+      check(userDetails.current_user)
+      
+      </script>
+      <script src="js/landing_main.js"></script>
+
+</body>
+</html>

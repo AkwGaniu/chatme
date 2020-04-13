@@ -1,0 +1,181 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  background: url(assets/images/good.jpg);
+  margin: 0;
+  padding: o; }
+
+.welcome-modal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: absolute;
+  padding-top: 100px;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #455c5b; }
+  .welcome-modal .modal-content {
+    width: 60%;
+    height: 200px;
+    padding: 30px 10px;
+    position: relative;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 6px 10px black;
+    box-shadow: 4px 6px 10px black; }
+    @media (max-width: 768px) {
+      .welcome-modal .modal-content {
+        border-radius: 0px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        width: 100%;
+        height: 100vh; } }
+    .welcome-modal .modal-content .action {
+      text-align: center; }
+      .welcome-modal .modal-content .action h1 {
+        margin: 0;
+        color: whitesmoke; }
+      .welcome-modal .modal-content .action p {
+        margin: 0;
+        text-align: center;
+        color: #d3cccc;
+        font-size: 1.2rem;
+        margin-bottom: 20px; }
+      .welcome-modal .modal-content .action .btn {
+        font-family: Arial, Helvetica, sans-serif;
+        outline: none;
+        width: 50%;
+        padding: .7rem 1.3rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 0;
+        color: #f2fffe;
+        background-color: #7cb37c;
+        cursor: pointer; }
+    .welcome-modal .modal-content .consent-form {
+      margin-top: 30px; }
+      .welcome-modal .modal-content .consent-form input {
+        font-family: Arial, Helvetica, sans-serif;
+        outline: none;
+        width: 70%;
+        padding: .7rem 1rem;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: 0;
+        color: #242525; }
+      .welcome-modal .modal-content .consent-form button {
+        font-family: Arial, Helvetica, sans-serif;
+        outline: none;
+        width: 20%;
+        padding: .7rem 1.3rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 0;
+        color: #f2fffe;
+        background-color: #7cb37c;
+        cursor: pointer; }
+
+.head {
+  width: 70%;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #455c5b; }
+  @media (max-width: 768px) {
+    .head {
+      width: 100%; } }
+  .head h1 {
+    font-family: algerian, courier;
+    font-size: 2rem;
+    margin: 0px 0px 5px;
+    color: #bbc0bf; }
+  .head h3 {
+    margin: 0;
+    color: #242525; }
+
+.main {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0;
+  height: 486px;
+  overflow-y: scroll; }
+  @media (max-width: 768px) {
+    .main {
+      width: 100%; } }
+  .main .chat-holder ul {
+    margin: 0;
+    padding-left: 5px; }
+    .main .chat-holder ul li {
+      list-style-type: none;
+      margin: 10px 2px;
+      width: 60%;
+      padding: 5px;
+      color: #d0d6d5;
+      background-color: #434646; }
+
+.main::after {
+  content: "";
+  clear: both;
+  display: table; }
+
+footer {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  right: -20; }
+  @media (max-width: 768px) {
+    footer {
+      width: 100%; } }
+  footer .msg {
+    background-color: #f0f0f0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    width: 70%;
+    border: 2px solid #242525;
+    border-radius: 20px;
+    padding: 5px 0px 5px 10px; }
+    @media (max-width: 768px) {
+      footer .msg {
+        width: 100%; } }
+    footer .msg input {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      width: 91%;
+      font-size: 1.2rem; }
+      @media (max-width: 768px) {
+        footer .msg input {
+          width: 85%; } }
+    footer .msg .send {
+      width: 9%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      margin: 0;
+      padding-left: 31px; }
+      @media (max-width: 768px) {
+        footer .msg .send {
+          padding-left: 0px; } }
+      footer .msg .send img {
+        width: 30px; }
+  footer div {
+    width: 15%; }
+    @media (max-width: 768px) {
+      footer div {
+        display: none; } }
