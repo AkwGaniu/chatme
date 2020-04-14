@@ -20,7 +20,7 @@
         </div>
         <div v-if="consent" class="consent-form">
           <form action="" @submit.prevent="welcome">
-            <input type="text" v-model="user" name="nickName" id="nickName" placeholder="Give yourself a nick name">
+            <input type="text" v-model="user" name="nickName" id="nickName" placeholder="Give yourself a nick name" autocomplete="off">
             <button class="btn">Join</button>
           </form>
         </div>
@@ -47,7 +47,7 @@
     <footer v-if="begin">
       <div></div>
       <form  action="" @submit.prevent = "initiateChat" class="msg">
-        <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message">
+        <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
         <button class="send" id="send">
           <img src="images/send.png" alt="Send">
         </button>
