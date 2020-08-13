@@ -25,25 +25,25 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
-function sendMsg() {
-  let msg = document.querySelector('#m')
-  socket.emit('chat', msg.value)
-  msg.value = ''
-  return false
-}
+      function sendMsg() {
+        let msg = document.querySelector('#m')
+        socket.emit('chat', msg.value)
+        msg.value = ''
+        return false
+      }
 
-const msgHolder = document.querySelector('#messages')
-socket.on('User Message', (msg)=> {
-  let li = document.createElement('li')
-  li.innerHTML = msg
-  msgHolder.append(li)
-})
+      const msgHolder = document.querySelector('#messages')
+      socket.on('User Message', (msg)=> {
+        let li = document.createElement('li')
+        li.innerHTML = msg
+        msgHolder.append(li)
+      })
 
-socket.on('new', (msg) => {
-  let li = document.createElement('li')
-  li.innerHTML = msg
-  msgHolder.append(li)
-})
+      socket.on('new', (msg) => {
+        let li = document.createElement('li')
+        li.innerHTML = msg
+        msgHolder.append(li)
+      })
 
     </script>
   </body>

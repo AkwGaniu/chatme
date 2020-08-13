@@ -10,7 +10,6 @@ const app = express()
 dotenv.config()
 app.use(express.static('./assets/'))
 
-// app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
@@ -18,14 +17,29 @@ mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true, useUnifiedTopol
     console.log('We are connected')
 })
 
-// app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/', smsRoute)
+app.use((req, resp, next) => {
+    resp.header('Access-Control-Allow-Origin', '*')
+    resp.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
+    resp.header('Access-Control-Allow-headers', 'Content-type, Accept, x-access-token, x-key')
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname+ '/index.html')
+    if(req.method === 'OPTIONS') {
+        resp.status(200).end()
+    } else {
+        next()
+    }
 })
 
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use('/', smsRoute)
+
+app.get('/chat', (req, res) => {
+    res.sendFile(__dirname+ '/views/index.html')
+})
+app.get('/chat_room', (req, res) => {
+    res.sendFile(__dirname+ '/views/chatRoom.html')
+})
 app.use((req, resp, next) => {
     resp.render('404')
     next()
@@ -44,6 +58,8 @@ const server = http.createServer(app)
 const io = require('socket.io')(server)
 
 io.on('connection', (socket) => {
+    socket.emit('connection')
+
     socket.broadcast.emit('new', 'A new user has joined the chat')
 
     socket.on('chat', (msg) =>{

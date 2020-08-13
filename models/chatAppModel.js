@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const userModel = new mongoose.Schema({
-    fname: {
+    names: {
         type: String,
         required: true
     },
-    lname: {
+    nickName: {
         type: String,
-        default: null
+        required: true
     },
     email: {
         type: String,
@@ -21,4 +21,4 @@ const userModel = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model('userModel', userModel)
+module.exports = mongoose.model('users', userModel)

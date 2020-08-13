@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeChaT</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script> -->
+
+</head>
+<body>
+  <div id="app">
+    <section v-if="!begin" class="welcome-modal">
+      <div
+        :class="['modal-content', consent ? 'heigh' : '', reg ? 'regHeight' : '']"
+        >
+        <div class="action">
+          <h1>Welcome To WeChaT</h1>
+          <p>Connect with friends</p>
+          <button @click="agree" v-if="!consent" class="btn">Join Chat</button>
+        </div>
+
+        <div v-if="consent" class="consent-form">
+          <p :class="[ success ? 'success' : 'error' ]"> {{ errorMsg }} </p>
+          <!-- LOGIN FORM -->
+            <form :class="[reg ? 'hide' : '']" @submit.prevent="login"  autocomplete="off">
+                <input type="email" placeholder="Email address" v-model="logIn.email" autocomplete="off">
+
+                <input type="password" placeholder="Password" v-model="logIn.password" autocomplete="off">
+
+                <div class="button-holder" style="margin: 0px;">
+                    <button class="button" name="login">Log In</button>
+                    <button @click.prevent="toggleReg" class="reg" name="login">Sign Up</button>
+                </div>
+            </form>
+
+            <!-- REGISTRATION FORM -->
+            <form :class="[!reg ? 'hide' : '']" @submit.prevent="register"  autocomplete="off">
+              <input type="text" placeholder="Your full name" v-model="signUp.names" autocomplete="off">
+
+              <input type="email" placeholder="Email address" v-model="signUp.email" autocomplete="off">
+
+              <input type="text" placeholder="Nick name" v-model="signUp.nickName" autocomplete="off">
+          
+              <input type="password" placeholder="Password" v-model="signUp.password" autocomplete="off">
+  
+              <div style="margin: 0px;">
+                  <button class="button" name="login">Sign Up</button>
+                  <button @click.prevent="toggleReg" class="reg" name="login">Log In</button>
+              </div>
+            </form> 
+        </div>
+      </div>
+    </section><!-- End of Welcome section  -->
+  </div>
+
+<!-- <script src="js/socket.js"></script> -->
+</body>
+</html>
+
+<script>
+  const app =  new Vue({
+    el: '#app',
+    data: {
+      logIn: {
+        email: '',
+        password: ''
+      },
+      signUp: {
+        names: '',
+        email: '',
+        nickName: '',
+        password: ''
+      },
+      reg: false,
+      begin: false,
+      consent: false,
+      errorMsg: '',
+      success: false
+    },
+    methods: {
+      agree() {
+        this.consent = true
+      },
+      welcome() {
+        this.socket = io()
+        this.begin = true
+      },
+      initiateChat() {
+        this.userTyping = ''
+        socket.emit('finish', this.user)
+        const message = {
+          sender: this.user,
+          message: this.msg
+        }
+        this.messages.push(message)
+        socket.emit('chat', message)
+        this.msg =''
+      },
+      typing(e) {
+        if (e.keyCode !== 13) {
+          socket.emit('typing', this.user)
+        } else {
+          this.userTyping = ''
+          socket.emit('finish', this.user)
+        }
+      },
+      toggleReg() {
+        this.reg = !this.reg
+        this.errorMsg = ''
+        this.logIn = {
+          email: '',
+          password: ''
+        },
+        this.signUp = {
+          names: '',
+          email: '',
+          nickName: '',
+          password: ''
+        }
+      },   
+      login() {           
+        if (this.logIn.email.length === 0 || this.logIn.password.length === 0) {
+          this.success = false
+          this.errorMsg = "All fields are required"
+        } else if (this.logIn.password.length < 8) {
+          this.success = false
+          this.errorMsg = "Password must be at least 8 characters"
+        } else {
+          this.errorMsg = ''
+          let url = `http://localhost:3000/login`
+          let regReq = {
+            method: "post",
+            body: JSON.stringify(this.logIn),
+            headers: {"Content-Type": "application/json"}
+          }
+    
+          fetch(url, regReq)
+          .then(resp => {
+            if(resp.ok) {
+              return resp.json()
+            } else {
+              return Promise.reject()
+            }
+          })
+          .then(data => {
+            if (data === 'welcome') {
+              self.location = 'http://localhost:3000/chat_room'
+            } else {
+              console.log(data)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      },
+      register  () {
+        if (this.signUp.names.length === 0 || this.signUp.nickName.length === 0 || this.signUp.email.length === 0 || this.signUp.password.length === 0) {
+          this.success = false
+          this.errorMsg = "All fields are required"
+        } else if (this.signUp.password.length < 8) {
+          this.success = false
+          this.errorMsg = "Password must be at least 8 characters"
+        } else {
+          this.errorMsg = ''
+          let url = `http://localhost:3000/register`     
+          let regReq = {
+            method: "post",
+            body: JSON.stringify(this.signUp),
+            headers: {"Content-Type": "application/json"}
+          }    
+          fetch(url, regReq)
+          .then(resp => {
+            if(resp.ok) {
+              return resp.json()
+            } else {
+              return Promise.reject()
+            }
+          })
+          .then(data => {
+            if (data === 'success') {
+              this.success = true
+              this.errorMsg = 'Registration successful, Please Login'
+              this.reg = !this.reg
+            } else {
+              console.log(data)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }     
+      }
+    }
+  })
+</script>
+<style>
+  .me {
+    float: left;
+    border-radius: 0px 10px 10px 0px;
+  }
+  .respondent {
+    float: right;
+    border-radius: 10px 0px 0px 10px;
+  }
+  .sender {
+    color:rgb(255, 46, 151)
+  }
+
+  .general {
+    background-color: khaki;
+    color: rgb(41, 39, 39);
+    list-style-type: none;
+    width: 50%;
+    margin: 0 auto;
+    padding: 5px;
+  }
+
+  .typing {
+    font-size: 10px;
+    color:blanchedalmond
+  }
+
+  .hide {
+      display: none !important
+  }
+
+  .heigh {
+    height: 300px !important
+  }
+
+  .regHeight {
+    height: 410px !important
+  }
+  .error {
+    margin: 0;
+    padding-bottom: 10px;
+    color: rgb(235, 148, 148);
+  }
+  .success {
+    color: rgb(130, 189, 130);
+  }
+</style>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChaTMe</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <div id="app">
+    <div class="mobile-modal">
+      <div class="modal-content">
+        <div class="chating bg">
+          <header class="head">
+            <div class="chats">
+            <div class="pics">
+              <img class="back" src="/images/arrow-left-solid.svg" alt="" srcset="">
+              <img class="img" src="/images/good.jpg" alt="User" srcset="">
+            </div>
+            <div class="details">
+              <h3>Current User</h3>
+            </div>
+          </div>
+          </header>
+        <ul>
+          <li
+            v-for="msg in messages"
+            :class="[msg.sender === user ? 'me' : 'respondent', msg.email === current ? 'hover' : '']"
+            > 
+              <strong v-if="msg.sender !== user" class="sender">{{ msg.sender}} <br> </strong>
+              {{ msg.message }}
+            </li>
+            <li class="respondent">There are many variations of passages of Lorem Ipsum available,
+               but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free 
+              from repetition, injected humour, or non-characteristic words etc.</li>
+            <li class="me">seufg</li>
+            <li class="respondent">bola</li>
+            <li class="me">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is 
+              therefore always free from repetition, injected humour, or non-characteristic words etc.</li>
+            <li class="respondent">bola</li>
+            <li class="me">seufg</li>
+        </ul>
+        <footer>
+          <form @submit.prevent = "initiateChat" class="msg">
+            <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
+            <button class="send" id="send">
+              <img src="images/send.png" alt="Send">
+            </button>
+          </form>
+        </footer>
+      </div>
+      </div>
+    </div>
+    <header class="head">
+      <h1>WeChaT</h1>
+      <div class="info">
+        <h3> {{ currentUser }} <br><span class="typing" v-if="userTyping.length > 0"> {{userTyping}} </span></h3>
+        <P v-if="active !== null"> {{ active }} online</P>
+      </div>
+    </header>
+    <main class="container">
+      <div class="users">
+
+        <div
+          class="chats"
+          @click="beginChat"
+          v-for="user in users"        
+        >
+          <div class="pics">
+            <img src="/images/good.jpg" alt="User" srcset="">
+          </div>
+          <div class="details">
+            <h3>{{ user.nickName }}</h3>
+            <p> {{ user.email }} </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chating bg">
+        <ul>
+          <li
+            v-for="msg in messages"
+            :class="[msg.sender === user ? 'me' : 'respondent', msg.email === current ? 'hover' : '']"
+            > 
+              <strong v-if="msg.sender !== user" class="sender">{{ msg.sender}} <br> </strong>
+              {{ msg.message }} 
+            </li>
+            <li class="respondent">There are many variations of passages of Lorem Ipsum available,
+               but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free 
+              from repetition, injected humour, or non-characteristic words etc.</li>
+            <li class="me">seufg</li>
+            <li class="respondent">bola</li>
+            <li class="me">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is 
+              therefore always free from repetition, injected humour, or non-characteristic words etc.</li>
+            <li class="respondent">bola</li>
+            <li class="me">seufg</li>
+        </ul>
+        <footer>
+          <!-- <div></div> -->
+          <form  action="" @submit.prevent = "initiateChat" class="msg">
+            <input @keyup="typing($event)" type="text" v-model="msg" name="message" id="message" placeholder="Type a message" autocomplete="off">
+            <button class="send" id="send">
+              <img src="images/send.png" alt="Send">
+            </button>
+          </form>
+          <!-- <div></div> -->
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
+
+<script>
+  //IMPORT CLIENT SOKECT
+  const socket = io()
+  
+const app =  new Vue({
+  delimeter: "'[[',']]'",
+  el: '#app',
+  data: {
+    msg: '',
+    messages: [],
+    users: null,
+    currentUser: null,
+    generalMsg: null,
+    userTyping: '',
+    active: null
+  },
+  methods: {
+    agree() {
+      this.consent = true
+    },
+    beginChat() {
+      alert("Start chat")
+    },
+    initiateChat() {
+      this.userTyping = ''
+      socket.emit('finish', this.user)
+      const message = {
+        sender: this.user,
+        message: this.msg
+      }
+      this.messages.push(message)
+      socket.emit('chat', message)
+      this.msg =''
+    },
+    typing(e) {
+      if (e.keyCode !== 13) {
+        socket.emit('typing', this.user)
+      } else {
+        this.userTyping = ''
+        socket.emit('finish', this.user)
+      }
+    }
+  },
+  computed: {
+  },
+
+  created() {
+    fetch('http://localhost:3000/')
+    .then(resp => {
+      if(resp.ok) {
+        return resp.json()
+      } else {
+        return Promise.reject()
+      }
+    })
+    .then(data => {
+      this.users = data
+      console.log(data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+  
+  mounted() {
+    if (this.socket !== null) {
+      socket.on('message', (data) => {
+        this.messages.push(data)
+        this.generalMsg = null
+      })
+  
+      socket.on('new', (data) => {
+        this.generalMsg = data
+        this.active += 1
+      })
+  
+      socket.on('userTyping', (data) => {
+        this.userTyping = data
+      })
+  
+      socket.on('userStoppedTyping', (data) => {
+        this.userTyping = ''
+      })
+    } else {
+      console.log("bad")
+    }
+  }
+})
+</script>
+
+<style>
+  .me {
+    float: left;
+    border-radius: 0px 10px 10px 0px;
+    background: rgb(193, 212, 185) !important;
+  }
+  .hover {
+    background: rgb(182, 176, 154);
+  }
+  .respondent {
+    float: right;
+    border-radius: 10px 0px 0px 10px;
+  }
+  .sender {
+    color:rgb(255, 46, 151)
+  }
+
+  .general {
+    background-color: khaki;
+    color: rgb(41, 39, 39);
+    list-style-type: none;
+    width: 50%;
+    margin: 0 auto;
+    padding: 5px;
+  }
+
+  .typing {
+    font-size: 10px;
+    color:blanchedalmond
+  }
+  .bg {
+    background: url(images/chat.png);
+  }
+</style>
